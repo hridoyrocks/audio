@@ -39,258 +39,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: var(--transition);
-            background-image: var(--bg-gradient);
-            background-size: cover;
-            background-attachment: fixed;
-        }
-        
-        .player-container {
-            max-width: 500px;
-            width: 100%;
-            background: var(--container-bg);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow-strong);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: var(--transition);
-        }
-        
-        @media (max-width: 576px) {
-            .player-container {
-                padding: 20px;
-                max-width: 100%;
-                border-radius: 15px;
-            }
-        }
-        
-        /* Album Art Section */
-        .album-art {
-            width: 180px;
-            height: 180px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-        
-        .album-art img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            box-shadow: var(--shadow);
-        }
-        
-        .album-disk {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background: #000;
-            border-radius: 50%;
-            z-index: 1;
-            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.5);
-            opacity: 0.8;
-        }
-        
-        .pulsating-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
-            background: #fff;
-            border-radius: 50%;
-        }
-        
-        @keyframes rotate-album {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        .is-playing .album-art img {
-            animation: rotate-album 15s linear infinite;
-        }
-        
-        /* Audio Info Section */
-        .audio-info {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .audio-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--primary-dark);
-        }
-        
-        .audio-description {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-        
-        /* Progress Section */
-        .progress-container {
-            margin-bottom: 20px;
-        }
-        
-        .progress-bar-container {
-            height: 6px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background: var(--bg-gradient);
-            border-radius: 10px;
-            width: 0;
-            position: relative;
-            transition: width 0.1s linear;
-        }
-        
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-        
-        /* Controls Section */
-        .player-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .control-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-color);
-            padding: 0;
-            margin: 0 15px;
-            font-size: 1.2rem;
-        }
-        
-        .control-btn:hover {
-            color: var(--primary-color);
-            transform: scale(1.2);
-        }
-        
-        .control-btn.btn-play-pause {
-            width: 60px;
-            height: 60px;
-            background: var(--bg-gradient);
-            border-radius: 50%;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            margin: 0 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .control-btn.btn-play-pause:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Volume Control */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 30px;
-            padding: 8px 15px;
-        }
-        
-        .volume-icon {
-            color: var(--text-secondary);
-            margin-right: 10px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        
-        .volume-icon:hover {
-            color: var(--primary-color);
-        }
-        
-        .volume-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 5px;
-            border-radius: 5px;
-            background: rgba(0, 0, 0, 0.1);
-            outline: none;
-        }
-        
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .volume-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            background: var(--primary-dark);
-        }
-        
-        .volume-slider::-moz-range-thumb {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-        }
-        
-        .volume-slider::-moz-range-thumb:hover {
-            transform: scale(1.2);
-            background: var(--primary-dark);
-        }
-        
-        /* Visualization */
-        .visualizer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            height: 40px;
-            margin-top: 20px;
-            gap: 2px;
-        }
-        
-        .visualizer-bar {
-            width: 4px;
-            background: var(--primary-color);
-            border-radius: 2px;
-            transition: var(--transition);
-        }
-        
-        /* No Audio Section */
-        .no-audio-container {
+            0; 0;">
             text-align: center;
             padding: 40px 20px;
         }
@@ -392,15 +141,19 @@
                 @endif
             </div>
             
-            <!-- Audio Player -->
+            <!-- Audio Player with Fixed URL -->
             @php
-                // Fix the audio URL
+                // Priority 1: Use audio_url from controller if available
                 if (isset($audio->audio_url)) {
                     $audioUrl = $audio->audio_url;
                 } else {
+                    // Priority 2: Generate URL with hardcoded domain
                     $cleanPath = str_replace('public/', '', $audio->audio_file);
-                    $audioUrl = asset('storage/' . $cleanPath);
+                    $audioUrl = 'https://book.banglayielts.com/storage/' . $cleanPath;
                 }
+                
+                // Extract just the filename for logging
+                $fileName = basename($audio->audio_file);
             @endphp
             
             <audio id="audio" style="display:none;">
@@ -413,9 +166,10 @@
             <!-- Debug Info (Remove in production) -->
             <script>
                 console.log('Audio Debug:', {
-                    url: '{{ $audioUrl }}',
-                    db_path: '{{ $audio->audio_file }}',
-                    file_exists: {{ isset($audio->file_exists) ? ($audio->file_exists ? 'true' : 'false') : 'null' }}
+                    finalUrl: '{{ $audioUrl }}',
+                    fileName: '{{ $fileName }}',
+                    dbPath: '{{ $audio->audio_file }}',
+                    fileExists: {{ isset($audio->file_exists) ? ($audio->file_exists ? 'true' : 'false') : 'null' }}
                 });
             </script>
             
@@ -677,7 +431,8 @@
                 audio.addEventListener('error', function(e) {
                     console.error('Audio error:', e);
                     console.error('Audio src:', audio.src);
-                    alert('অডিও লোড করতে সমস্যা হচ্ছে। পেজ রিফ্রেশ করুন অথবা পরে চেষ্টা করুন।');
+                    console.error('Error code:', e.target.error.code);
+                    console.error('Error message:', e.target.error.message);
                 });
                 
                 audio.addEventListener('ended', function() {

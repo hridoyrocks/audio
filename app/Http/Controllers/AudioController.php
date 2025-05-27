@@ -14,14 +14,28 @@ class AudioController extends Controller
         $audio = Audio::where('serial_number', $serial_number)->firstOrFail();
         $audio->increment('play_count');
         
-        // Generate proper audio URL
+        // Generate proper audio URL with hardcoded domain
         if ($audio->audio_file) {
             // Remove 'public/' from the path
             $cleanPath = str_replace('public/', '', $audio->audio_file);
-            $audio->audio_url = asset('storage/' . $cleanPath);
+            
+            // Force HTTPS and correct domain
+            $audio->audio_url = 'https://book.banglayielts.com/storage/' . $cleanPath;
+            
+            // Alternative URL using asset helper (backup)
+            $audio->audio_url_backup = asset('storage/' . $cleanPath);
             
             // Check if file exists
             $audio->file_exists = Storage::exists($audio->audio_file);
+            
+            // Debug info
+            \Log::info('Audio URL Generated', [
+                'serial' => $serial_number,
+                'db_path' => $audio->audio_file,
+                'clean_path' => $cleanPath,
+                'audio_url' => $audio->audio_url,
+                'file_exists' => $audio->file_exists
+            ]);
         }
         
         return view('audios.show', compact('audio'));
@@ -31,6 +45,15 @@ class AudioController extends Controller
     public function index()
     {
         $audios = Audio::all();
+        
+        // Generate URLs for admin view
+        foreach ($audios as $audio) {
+            if ($audio->audio_file) {
+                $cleanPath = str_replace('public/', '', $audio->audio_file);
+                $audio->preview_url = 'https://book.banglayielts.com/storage/' . $cleanPath;
+            }
+        }
+        
         return view('admin.audios.index', compact('audios'));
     }
     
@@ -58,6 +81,9 @@ class AudioController extends Controller
             $audio->is_active = $request->has('is_active') ? 1 : 0;
             
             if ($request->hasFile('audio_file') && $request->file('audio_file')->isValid()) {
+                // Ensure directory exists
+                Storage::makeDirectory('public/audios');
+                
                 // Use Laravel's storage system
                 $path = $request->file('audio_file')->store('public/audios');
                 $audio->audio_file = $path;
@@ -82,6 +108,12 @@ class AudioController extends Controller
     
     public function edit(Audio $audio)
     {
+        // Generate preview URL for edit page
+        if ($audio->audio_file) {
+            $cleanPath = str_replace('public/', '', $audio->audio_file);
+            $audio->preview_url = 'https://book.banglayielts.com/storage/' . $cleanPath;
+        }
+        
         return view('admin.audios.edit', compact('audio'));
     }
     
@@ -105,6 +137,10 @@ class AudioController extends Controller
             if ($audio->audio_file) {
                 Storage::delete($audio->audio_file);
             }
+            
+            // Ensure directory exists
+            Storage::makeDirectory('public/audios');
+            
             $path = $request->file('audio_file')->store('public/audios');
             $audio->audio_file = $path;
         }
@@ -144,5 +180,23 @@ class AudioController extends Controller
             'Accept-Ranges' => 'bytes',
             'Content-Disposition' => 'inline; filename="' . $filename . '"',
         ]);
+    }
+    
+    // Direct play method (alternative)
+    public function play($serial_number)
+    {
+        $audio = Audio::where('serial_number', $serial_number)->firstOrFail();
+        
+        if (!$audio->audio_file) {
+            abort(404, 'Audio file not found');
+        }
+        
+        $path = storage_path('app/' . $audio->audio_file);
+        
+        if (!file_exists($path)) {
+            abort(404, 'Audio file not found');
+        }
+        
+        return response()->file($path);
     }
 }
