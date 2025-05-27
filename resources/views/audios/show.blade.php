@@ -39,7 +39,244 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            0; 0;">
+            align-items: center;
+            padding: 20px;
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+        }
+        
+        /* Player Container */
+        .player-container {
+            background: var(--container-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-strong);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Background Decoration */
+        .blur-bg {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 300px;
+            height: 300px;
+            background: var(--bg-gradient);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        /* Album Art */
+        .album-art {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+        }
+        
+        .album-disk {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: var(--primary-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .player-container.is-playing .album-art img {
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Audio Info */
+        .audio-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .audio-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .audio-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Visualizer */
+        .visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 50px;
+            gap: 4px;
+            margin-bottom: 30px;
+        }
+        
+        .visualizer-bar {
+            width: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: height 0.2s ease;
+            opacity: 0.7;
+        }
+        
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar-container {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--bg-gradient);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Controls */
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .control-btn:hover {
+            color: var(--primary-color);
+            background: rgba(130, 73, 181, 0.1);
+        }
+        
+        .control-btn.btn-play-pause {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-gradient);
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .control-btn.btn-play-pause:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Volume Control */
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .volume-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .volume-icon:hover {
+            color: var(--primary-color);
+        }
+        
+        .volume-slider {
+            width: 100px;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e0e0e0;
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        /* No Audio Message */
+        .no-audio-container {
             text-align: center;
             padding: 40px 20px;
         }
@@ -61,35 +298,6 @@
             text-align: center;
             font-size: 0.8rem;
             color: rgba(255, 255, 255, 0.7);
-        }
-        
-        /* Loading Animation */
-        .loader {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50px;
-        }
-        
-        .loader-bar {
-            display: inline-block;
-            width: 4px;
-            height: 18px;
-            border-radius: 4px;
-            margin: 0 2px;
-            background-color: var(--primary-color);
-            animation: loading 1s ease-in-out infinite;
-        }
-        
-        .loader-bar:nth-child(1) { animation-delay: 0s; }
-        .loader-bar:nth-child(2) { animation-delay: 0.1s; }
-        .loader-bar:nth-child(3) { animation-delay: 0.2s; }
-        .loader-bar:nth-child(4) { animation-delay: 0.3s; }
-        .loader-bar:nth-child(5) { animation-delay: 0.4s; }
-        
-        @keyframes loading {
-            0%, 100% { transform: scaleY(0.5); }
-            50% { transform: scaleY(1.5); }
         }
         
         /* Mobile Optimizations */
@@ -125,6 +333,15 @@
         <div class="blur-bg"></div>
         
         @if($audio->audio_file)
+            @php
+                // Generate audio URL based on file path
+                if (str_starts_with($audio->audio_file, 'http://') || str_starts_with($audio->audio_file, 'https://')) {
+                    $audioUrl = $audio->audio_file;
+                } else {
+                    $audioUrl = asset($audio->audio_file);
+                }
+            @endphp
+            
             <!-- Album Art -->
             <div class="album-art">
                 <img src="https://yt3.googleusercontent.com/_yDR5IDXVdx8Sax1-vxnK5_9L2ix-LCWxpvE_eBOH1qzkXi2YFyQPb7kJQ2q85XhUqHVH5Tzyw=s900-c-k-c0x00ffffff-no-rj" alt="{{ $audio->title }}" id="album-img">
@@ -141,37 +358,13 @@
                 @endif
             </div>
             
-            <!-- Audio Player with Fixed URL -->
-            @php
-                // Priority 1: Use audio_url from controller if available
-                if (isset($audio->audio_url)) {
-                    $audioUrl = $audio->audio_url;
-                } else {
-                    // Priority 2: Generate URL with hardcoded domain
-                    $cleanPath = str_replace('public/', '', $audio->audio_file);
-                    $audioUrl = 'https://book.banglayielts.com/storage/' . $cleanPath;
-                }
-                
-                // Extract just the filename for logging
-                $fileName = basename($audio->audio_file);
-            @endphp
-            
+            <!-- Audio Player -->
             <audio id="audio" style="display:none;">
                 <source src="{{ $audioUrl }}" type="audio/mpeg">
                 <source src="{{ $audioUrl }}" type="audio/ogg">
                 <source src="{{ $audioUrl }}" type="audio/wav">
                 আপনার ব্রাউজার অডিও প্লেয়ার সাপোর্ট করে না।
             </audio>
-            
-            <!-- Debug Info (Remove in production) -->
-            <script>
-                console.log('Audio Debug:', {
-                    finalUrl: '{{ $audioUrl }}',
-                    fileName: '{{ $fileName }}',
-                    dbPath: '{{ $audio->audio_file }}',
-                    fileExists: {{ isset($audio->file_exists) ? ($audio->file_exists ? 'true' : 'false') : 'null' }}
-                });
-            </script>
             
             <!-- Audio Visualizer -->
             <div class="visualizer" id="visualizer">
@@ -241,13 +434,6 @@
                     <i class="fas fa-music"></i>
                 </div>
                 <p class="no-audio-message">এই অডিওটি এখনো আপলোড করা হয়নি।</p>
-                <div class="loader mt-4">
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                    <div class="loader-bar"></div>
-                </div>
                 <p class="mt-3">অনুগ্রহ করে পরে আবার চেষ্টা করুন।</p>
             </div>
         @endif
@@ -431,8 +617,6 @@
                 audio.addEventListener('error', function(e) {
                     console.error('Audio error:', e);
                     console.error('Audio src:', audio.src);
-                    console.error('Error code:', e.target.error.code);
-                    console.error('Error message:', e.target.error.message);
                 });
                 
                 audio.addEventListener('ended', function() {
