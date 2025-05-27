@@ -314,20 +314,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
         
-        /* Special Effects */
-        .blur-bg {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: url('{{ Storage::url($audio->audio_file ? "public/images/music-pattern.jpg" : "public/images/music-pattern.jpg") }}');
-            background-size: cover;
-            filter: blur(30px);
-            opacity: 0.1;
-            z-index: -1;
-        }
-        
         /* Loading Animation */
         .loader {
             display: flex;
@@ -383,18 +369,6 @@
                 margin: 0 15px;
             }
         }
-        
-        /* Dark Mode - Uncomment to implement */
-        /*
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --text-color: #e1e1e1;
-                --text-secondary: #a0a0a0;
-                --bg-color: #121212;
-                --container-bg: rgba(30, 30, 30, 0.9);
-            }
-        }
-        */
     </style>
 </head>
 <body>
@@ -419,10 +393,31 @@
             </div>
             
             <!-- Audio Player -->
+            @php
+                // Fix the audio URL
+                if (isset($audio->audio_url)) {
+                    $audioUrl = $audio->audio_url;
+                } else {
+                    $cleanPath = str_replace('public/', '', $audio->audio_file);
+                    $audioUrl = asset('storage/' . $cleanPath);
+                }
+            @endphp
+            
             <audio id="audio" style="display:none;">
-                <source src="{{ Storage::url($audio->audio_file) }}" type="audio/mpeg">
+                <source src="{{ $audioUrl }}" type="audio/mpeg">
+                <source src="{{ $audioUrl }}" type="audio/ogg">
+                <source src="{{ $audioUrl }}" type="audio/wav">
                 আপনার ব্রাউজার অডিও প্লেয়ার সাপোর্ট করে না।
             </audio>
+            
+            <!-- Debug Info (Remove in production) -->
+            <script>
+                console.log('Audio Debug:', {
+                    url: '{{ $audioUrl }}',
+                    db_path: '{{ $audio->audio_file }}',
+                    file_exists: {{ isset($audio->file_exists) ? ($audio->file_exists ? 'true' : 'false') : 'null' }}
+                });
+            </script>
             
             <!-- Audio Visualizer -->
             <div class="visualizer" id="visualizer">
@@ -537,17 +532,22 @@
                 // Play/Pause function
                 function togglePlayPause() {
                     if (audio.paused) {
-                        audio.play();
-                        btnPlayPause.innerHTML = '<i class="fas fa-pause"></i>';
-                        playerContainer.classList.add('is-playing');
-                        startVisualization();
+                        audio.play().then(() => {
+                            btnPlayPause.innerHTML = '<i class="fas fa-pause"></i>';
+                            playerContainer.classList.add('is-playing');
+                            startVisualization();
+                            isPlaying = true;
+                        }).catch(e => {
+                            console.error('Play failed:', e);
+                            alert('অডিও প্লে করতে সমস্যা হচ্ছে। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।');
+                        });
                     } else {
                         audio.pause();
                         btnPlayPause.innerHTML = '<i class="fas fa-play"></i>';
                         playerContainer.classList.remove('is-playing');
                         stopVisualization();
+                        isPlaying = false;
                     }
-                    isPlaying = !audio.paused;
                 }
                 
                 // Update progress function
@@ -673,6 +673,13 @@
                 audio.addEventListener('loadedmetadata', function() {
                     durationEl.textContent = formatTime(audio.duration);
                 });
+                
+                audio.addEventListener('error', function(e) {
+                    console.error('Audio error:', e);
+                    console.error('Audio src:', audio.src);
+                    alert('অডিও লোড করতে সমস্যা হচ্ছে। পেজ রিফ্রেশ করুন অথবা পরে চেষ্টা করুন।');
+                });
+                
                 audio.addEventListener('ended', function() {
                     if (!isRepeat) {
                         btnPlayPause.innerHTML = '<i class="fas fa-play"></i>';
