@@ -31,7 +31,6 @@ class AudioController extends Controller
     
     public function store(Request $request)
 {
-    // জাস্ট ডিবাগিং জন্য
     \Log::info('ফর্ম ডাটা:', $request->all());
     
     try {
@@ -49,14 +48,11 @@ class AudioController extends Controller
         $audio->is_active = $request->has('is_active') ? 1 : 0;
         
         if ($request->hasFile('audio_file') && $request->file('audio_file')->isValid()) {
-            $file = $request->file('audio_file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            // Use Laravel's storage system instead of move()
+            $path = $request->file('audio_file')->store('public/audios');
+            $audio->audio_file = $path;
             
-            // সরাসরি স্টোরেজ ডিরেক্টরিতে সংরক্ষণ করুন
-            $file->move(public_path('storage/audios'), $fileName);
-            $audio->audio_file = 'public/audios/' . $fileName;
-            
-            \Log::info('ফাইল সংরক্ষণ করা হয়েছে: ' . $fileName);
+            \Log::info('ফাইল সংরক্ষণ করা হয়েছে: ' . $path);
         } else {
             \Log::warning('ফাইল আপলোড সমস্যা!', [
                 'has_file' => $request->hasFile('audio_file'),
