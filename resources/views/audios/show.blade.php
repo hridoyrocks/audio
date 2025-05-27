@@ -440,7 +440,7 @@
     </div>
     
     <footer>
-        <p>Made with ❤️ Rocks</p>
+        <p>Made with ❤️ in Dhaka </p>
     </footer>
     
     <script>
