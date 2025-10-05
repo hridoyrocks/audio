@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অডিও লিস্ট</title>
+    <title>PDF লিস্ট</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -65,10 +65,10 @@
                     <div class="container-fluid">
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h2>অডিও লিস্ট</h2>
+                                <h2>PDF লিস্ট</h2>
                             </div>
                             <div class="col-md-6 text-end">
-                                <a href="{{ route('admin.audios.create') }}" class="btn btn-primary">নতুন অডিও যোগ করুন</a>
+                                <a href="{{ route('admin.pdfs.create') }}" class="btn btn-primary">নতুন PDF যোগ করুন</a>
                             </div>
                         </div>
                         
@@ -84,36 +84,36 @@
                                     <thead>
                                         <tr>
                                             <th>সিরিয়াল নম্বর</th>
-                                            <th>শিরোনাম</th>
+                                            <th>টাইটেল</th>
                                             <th>স্ট্যাটাস</th>
-                                            <th>প্লে কাউন্ট</th>
+                                            <th>ডাউনলোড কাউন্ট</th>
                                             <th>QR লিংক</th>
                                             <th>অ্যাকশন</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if(isset($audios) && count($audios) > 0)
-                                            @foreach($audios as $audio)
+                                        @if(isset($pdfs) && count($pdfs) > 0)
+                                            @foreach($pdfs as $pdf)
                                                 <tr>
-                                                    <td>{{ $audio->serial_number }}</td>
-                                                    <td>{{ $audio->title ?? 'শিরোনাম নেই' }}</td>
+                                                    <td>{{ $pdf->serial_number }}</td>
+                                                    <td>{{ $pdf->title ?? 'টাইটেল নেই' }}</td>
                                                     <td>
-                                                        @if($audio->is_active && $audio->audio_file)
+                                                        @if($pdf->is_active)
                                                             <span class="badge bg-success">সক্রিয়</span>
                                                         @else
                                                             <span class="badge bg-danger">নিষ্ক্রিয়</span>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $audio->play_count }}</td>
+                                                    <td>{{ $pdf->download_count }}</td>
                                                     <td>
-                                                        <a href="{{ route('audio.show', $audio->serial_number) }}" target="_blank" class="text-primary">
-                                                            {{ route('audio.show', $audio->serial_number) }}
+                                                        <a href="{{ route('pdf.download', $pdf->serial_number) }}" target="_blank" class="text-primary">
+                                                            {{ route('pdf.download', $pdf->serial_number) }}
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.audios.edit', $audio) }}" class="btn btn-sm btn-info me-2">এডিট</a>
+                                                        <a href="{{ route('admin.pdfs.edit', $pdf) }}" class="btn btn-sm btn-info me-2">এডিট</a>
                                                         
-                                                        <form action="{{ route('admin.audios.destroy', $audio) }}" method="POST" class="d-inline">
+                                                        <form action="{{ route('admin.pdfs.destroy', $pdf) }}" method="POST" class="d-inline">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('আপনি কি নিশ্চিত?')">ডিলিট</button>
@@ -123,7 +123,7 @@
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="6" class="text-center">কোন অডিও পাওয়া যায়নি</td>
+                                                <td colspan="6" class="text-center">কোন PDF পাওয়া যায়নি</td>
                                             </tr>
                                         @endif
                                     </tbody>

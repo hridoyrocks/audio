@@ -327,6 +327,7 @@
             }
         }
     </style>
+    
 </head>
 <body>
     <div class="player-container" id="player-container">

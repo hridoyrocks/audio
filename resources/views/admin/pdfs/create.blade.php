@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>নতুন অডিও যোগ করুন</title>
+    <title>নতুন PDF যোগ করুন</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -40,9 +40,10 @@
 </head>
 <body>
     <div class="header">
-        <h3>অডিও QR সিস্টেম</h3>
+        <h3>ROCKS AUDIO</h3>
         <div>
-            <a href="{{ route('admin.audios.index') }}" class="btn btn-outline-light">ফিরে যান</a>
+            <span class="me-3">Admin</span>
+            <a href="/login" class="btn btn-outline-light btn-sm">লগআউট</a>
         </div>
     </div>
 
@@ -61,58 +62,61 @@
             </div>
             <div class="col-md-10">
                 <div class="content">
-                    <div class="container">
-                        <div class="row mb-4">
-                            <div class="col-md-12">
-                                <h2>নতুন অডিও যোগ করুন</h2>
-                            </div>
-                        </div>
+                    <div class="container-fluid">
+                        <h2 class="mb-4">নতুন PDF যোগ করুন</h2>
                         
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('admin.audios.store') }}" method="POST" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('admin.pdfs.store') }}" enctype="multipart/form-data">
                                     @csrf
                                     
                                     <div class="mb-3">
                                         <label for="serial_number" class="form-label">সিরিয়াল নম্বর *</label>
-                                        <input type="text" class="form-control @error('serial_number') is-invalid @enderror" id="serial_number" name="serial_number" value="{{ old('serial_number') }}" required>
+                                        <input type="text" class="form-control @error('serial_number') is-invalid @enderror" 
+                                               id="serial_number" name="serial_number" value="{{ old('serial_number') }}" required>
                                         @error('serial_number')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                        <small class="text-muted">উদাহরণ: audio1, audio2, page5-audio, chapter1</small>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="title" class="form-label">শিরোনাম</label>
-                                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}">
+                                        <label for="title" class="form-label">টাইটেল</label>
+                                        <input type="text" class="form-control @error('title') is-invalid @enderror" 
+                                               id="title" name="title" value="{{ old('title') }}">
                                         @error('title')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="description" class="form-label">বিবরণ</label>
-                                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ old('description') }}</textarea>
+                                        <label for="description" class="form-label">বর্ণনা</label>
+                                        <textarea class="form-control @error('description') is-invalid @enderror" 
+                                                  id="description" name="description" rows="3">{{ old('description') }}</textarea>
                                         @error('description')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="audio_file" class="form-label">অডিও ফাইল</label>
-                                        <input type="file" class="form-control @error('audio_file') is-invalid @enderror" id="audio_file" name="audio_file">
-                                        <small class="form-text text-muted">সমর্থিত ফাইল ফরম্যাট: MP3, WAV, OGG. সর্বোচ্চ সাইজ: 20MB</small>
-                                        @error('audio_file')
+                                        <label for="pdf_file" class="form-label">PDF ফাইল * (সর্বোচ্চ 20MB)</label>
+                                        <input type="file" class="form-control @error('pdf_file') is-invalid @enderror" 
+                                               id="pdf_file" name="pdf_file" accept=".pdf" required>
+                                        @error('pdf_file')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                                     
-                                    <div class="mb-3 form-check">
-                                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {{ old('is_active') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_active">সক্রিয়?</label>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="is_active">সক্রিয়</label>
+                                        </div>
                                     </div>
                                     
-                                    <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('admin.pdfs.index') }}" class="btn btn-secondary">বাতিল</a>
+                                        <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

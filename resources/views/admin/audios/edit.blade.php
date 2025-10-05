@@ -56,8 +56,13 @@
         <div class="row">
             <div class="col-md-2 p-0">
                 <div class="sidebar">
+                    <a href="{{ route('dashboard') }}">ড্যাশবোর্ড</a>
+                    <hr style="border-color: rgba(255,255,255,.1); margin: 10px 0;">
                     <a href="{{ route('admin.audios.index') }}">অডিও লিস্ট</a>
                     <a href="{{ route('admin.audios.create') }}">নতুন অডিও</a>
+                    <hr style="border-color: rgba(255,255,255,.1); margin: 10px 0;">
+                    <a href="{{ route('admin.pdfs.index') }}">PDF লিস্ট</a>
+                    <a href="{{ route('admin.pdfs.create') }}">নতুন PDF</a>
                 </div>
             </div>
             <div class="col-md-10">
