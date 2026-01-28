@@ -114,8 +114,13 @@
                                         <div class="audio-preview">
                                             <label class="form-label">বর্তমান অডিও ফাইল:</label>
                                             <div>
+                                                @php
+                                                    $audioUrl = (str_starts_with($audio->audio_file, 'http://') || str_starts_with($audio->audio_file, 'https://'))
+                                                        ? $audio->audio_file
+                                                        : asset($audio->audio_file);
+                                                @endphp
                                                 <audio controls class="w-100" style="max-width: 500px;">
-                                                    <source src="{{ Storage::url($audio->audio_file) }}" type="audio/mpeg">
+                                                    <source src="{{ $audioUrl }}" type="audio/mpeg">
                                                     আপনার ব্রাউজার অডিও প্লেয়ার সাপোর্ট করে না।
                                                 </audio>
                                             </div>

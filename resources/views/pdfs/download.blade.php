@@ -265,7 +265,12 @@
             </div>
             <div class="preview-frame">
                 @if($pdf->pdf_file)
-                    <iframe src="{{ asset($pdf->pdf_file) }}"></iframe>
+                    @php
+                        $pdfUrl = (str_starts_with($pdf->pdf_file, 'http://') || str_starts_with($pdf->pdf_file, 'https://'))
+                            ? $pdf->pdf_file
+                            : asset($pdf->pdf_file);
+                    @endphp
+                    <iframe src="{{ $pdfUrl }}"></iframe>
                 @endif
             </div>
         </div>
